@@ -1,0 +1,129 @@
+import dayjs from 'dayjs';
+
+export function get(obj: any, key: string) {
+  return key.split('.').reduce(function (o, x) {
+    return o === undefined || o === null ? o : o[x];
+  }, obj);
+}
+
+declare global {
+  interface ObjectConstructor {
+    byString(o: { [x: string]: any } | null, s: string): any;
+  }
+}
+
+Object.byString = function (o: { [x: string]: any } | null, s: string) {
+  s = s.replace(/\[(\w+)\]/g, '.$1'); // convert indexes to properties
+  s = s.replace(/^\./, ''); // strip a leading dot
+  let a = s.split('.');
+  for (let i = 0, n = a.length; i < n; ++i) {
+    let k = a[i];
+    if (o !== null) {
+      if (k in o) {
+        o = o[k];
+      } else {
+        return;
+      }
+    } else {
+      return;
+    }
+  }
+  return o;
+};
+
+/* 
+ To check only if a property exists, without getting its value. It similar get function.
+*/
+export function has(obj: { [x: string]: any } | null, key: string) {
+  return key.split('.').every(function (x) {
+    if (typeof obj !== 'object' || obj === null || x in obj === false)
+      /// !x in obj or  x in obj === true *** if you find any bug
+      return false;
+    obj = obj[x];
+    return true;
+  });
+}
+
+/* 
+ convert indexes to properties
+*/
+export function valueByString(obj: any, string: string, devider: string | undefined) {
+  if (devider === undefined) {
+    devider = '|';
+  }
+  return string
+    .split(devider)
+    .map(function (key) {
+      return get(obj, key);
+    })
+    .join(' ');
+}
+
+/*
+ Submit multi-part form using ajax.
+*/
+export function toFormData(form: { querySelectorAll: (arg0: string) => any }) {
+  let formData = new FormData();
+  const elements = form.querySelectorAll('input, select, textarea');
+  for (let i = 0; i < elements.length; ++i) {
+    const element = elements[i];
+    const name = element.name;
+
+    if (name && element.dataset.disabled !== 'true') {
+      if (element.type === 'file') {
+        const file = element.files[0];
+        formData.append(name, file);
+      } else {
+        const value = element.value;
+        if (value && value.trim()) {
+          formData.append(name, value);
+        }
+      }
+    }
+  }
+
+  return formData;
+}
+
+/*
+ Format Date to display admin
+*/
+export function formatDate(param: string | number | Date) {
+  const date = new Date(param);
+  let day = date.getDate().toString();
+  let month = (date.getMonth() + 1).toString();
+  const year = date.getFullYear();
+  if (month.length < 2) month = `0${month}`;
+  if (day.length < 2) day = `0${day}`;
+  const fullDate = `${day}/${month}/${year}`;
+  return fullDate;
+}
+
+export const isDate = function ({
+  date,
+  format = 'YYYY-MM-DD',
+}: {
+  date: string | number | Date;
+  format?: string;
+}) {
+  if (typeof date == 'boolean') return false;
+  if (typeof date == 'number') return false;
+  if (dayjs(date, format).isValid()) return true;
+  return false;
+};
+/*
+ Format Datetime to display admin
+*/
+export function formatDatetime(param: string | number | Date) {
+  let time = new Date(param).toLocaleTimeString();
+  return formatDate(param) + ' ' + time;
+}
+
+/*
+  Regex to validate phone number format
+*/
+export const validatePhoneNumber = /^(?:[+\d()\-\s]+)$/;
+
+/*
+ Set object value in html
+*/

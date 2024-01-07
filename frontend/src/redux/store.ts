@@ -1,15 +1,16 @@
 import { configureStore } from '@reduxjs/toolkit';
 
-import lang from '@/locale/translation/en_us';
+import lang from '@/locale/translation/vi_vn';
 
 import rootReducer from './rootReducer';
 import storePersist, { localStorageHealthCheck } from './storePersist';
+import { useDispatch } from 'react-redux';
 
 localStorageHealthCheck();
 
 const LANG_INITIAL_STATE = {
   result: lang,
-  langCode: 'en_us',
+  langCode: 'vi_vn',
   isLoading: false,
   isSuccess: false,
 };
@@ -40,3 +41,6 @@ const store = configureStore({
 //  );
 
 export default store;
+
+export type AppDispatch = typeof store.dispatch
+export const useAppDispatch: () => AppDispatch = useDispatch //

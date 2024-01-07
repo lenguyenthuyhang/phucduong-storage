@@ -1,9 +1,21 @@
-import { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
+import { useNavigate } from 'react-router-dom';
 import { EyeOutlined, EditOutlined, DeleteOutlined, EllipsisOutlined } from '@ant-design/icons';
-import { Dropdown, Table, Button } from 'antd';
+import {
+  Dropdown,
+  Table,
+  Button,
+  Flex,
+  Typography,
+  Layout,
+  AutoComplete,
+  Input,
+  Tooltip,
+} from 'antd';
+import { PlusOutlined } from '@ant-design/icons';
 import { PageHeader } from '@ant-design/pro-layout';
-
+import { Iconify } from '@/components/Icon';
 import { useSelector, useDispatch } from 'react-redux';
 import { crud } from '@/redux/crud/actions';
 import { selectListItems } from '@/redux/crud/selectors';
@@ -15,49 +27,52 @@ import { generate as uniqueId } from 'shortid';
 
 import { useCrudContext } from '@/context/crud';
 
+const { Content } = Layout;
+
 function AddNewItem({ config }) {
+  const navigate = useNavigate();
   const { crudContextAction } = useCrudContext();
   const { collapsedBox, panel } = crudContextAction;
-  const { ADD_NEW_ENTITY } = config;
+  const { ADD_NEW_ENTITY, entity } = config;
 
-  const handelClick = () => {
-    panel.open();
-    collapsedBox.close();
+  // const handelClick = () => {
+  //   panel.open();
+  //   collapsedBox.close();
+  // };
+
+  const handleClick = () => {
+    navigate(`/${entity.toLowerCase()}/create`);
   };
 
   return (
-    <Button onClick={handelClick} type="primary">
+    <Button onClick={handleClick} type="primary" icon={<PlusOutlined />}>
       {ADD_NEW_ENTITY}
     </Button>
   );
 }
+
 export default function DataTable({ config, extra = [] }) {
   let { entity, dataTableColumns, DATATABLE_TITLE, fields } = config;
   const { crudContextAction } = useCrudContext();
   const { panel, collapsedBox, modal, readBox, editBox, advancedBox } = crudContextAction;
   const translate = useLanguage();
   const { moneyFormatter } = useMoney();
-
   const items = [
     {
       label: translate('Show'),
       key: 'read',
-      icon: <EyeOutlined />,
+      icon: <Iconify icon="solar:eye-line-duotone" size={18} />,
     },
     {
       label: translate('Edit'),
       key: 'edit',
-      icon: <EditOutlined />,
+      icon: <Iconify icon="solar:pen-new-round-line-duotone" size={18} />,
     },
     ...extra,
     {
-      type: 'divider',
-    },
-
-    {
       label: translate('Delete'),
       key: 'delete',
-      icon: <DeleteOutlined />,
+      icon: <Iconify icon="solar:trash-bin-trash-line-duotone" size={18} />,
     },
   ];
 
@@ -101,38 +116,38 @@ export default function DataTable({ config, extra = [] }) {
       key: 'action',
       fixed: 'right',
       render: (_, record) => (
-        <Dropdown
-          menu={{
-            items,
-            onClick: ({ key }) => {
-              switch (key) {
-                case 'read':
-                  handleRead(record);
-                  break;
-                case 'edit':
-                  handleEdit(record);
-                  break;
+        <Flex gap={10} justify="end">
+          {items.map((item) => {
+            return (
+              <Tooltip key={`${uniqueId()}`} title={item.label}>
+                <Button
+                  danger={item.key === 'delete' ? true : false}
+                  onClick={() => {
+                    switch (item.key) {
+                      case 'read':
+                        handleRead(record);
+                        break;
+                      case 'edit':
+                        handleEdit(record);
+                        break;
 
-                case 'delete':
-                  handleDelete(record);
-                  break;
-                case 'updatePassword':
-                  handleUpdatePassword(record);
-                  break;
+                      case 'delete':
+                        handleDelete(record);
+                        break;
+                      case 'updatePassword':
+                        handleUpdatePassword(record);
+                        break;
 
-                default:
-                  break;
-              }
-              // else if (key === '2')handleCloseTask
-            },
-          }}
-          trigger={['click']}
-        >
-          <EllipsisOutlined
-            style={{ cursor: 'pointer', fontSize: '24px' }}
-            onClick={(e) => e.preventDefault()}
-          />
-        </Dropdown>
+                      default:
+                        break;
+                    }
+                  }}
+                  icon={item.icon}
+                ></Button>
+              </Tooltip>
+            );
+          })}
+        </Flex>
       ),
     },
   ];
@@ -167,25 +182,46 @@ export default function DataTable({ config, extra = [] }) {
         title={DATATABLE_TITLE}
         ghost={false}
         extra={[
-          <Button onClick={handelDataTableLoad} key={`${uniqueId()}`}>
-            {translate('Refresh')}
-          </Button>,
+          <Tooltip title={translate('Refresh')} key={`${uniqueId()}`}>
+            <Button
+              onClick={handelDataTableLoad}
+              icon={<Iconify icon="solar:refresh-line-duotone" size={20} />}
+            ></Button>
+          </Tooltip>,
           <AddNewItem key={`${uniqueId()}`} config={config} />,
         ]}
         style={{
           padding: '20px 0px',
         }}
       ></PageHeader>
-
-      <Table
-        columns={dataTableColumns}
-        rowKey={(item) => item._id}
-        dataSource={dataSource}
-        pagination={pagination}
-        loading={listIsLoading}
-        onChange={handelDataTableLoad}
-        scroll={{ x: true }}
-      />
+      <Content className="whiteBox">
+        <Flex className="p-4">
+          <Input
+            placeholder={translate('search')}
+            allowClear
+            prefix={<Iconify icon="carbon:search" size={14} className="text-gray-400" />}
+          />
+        </Flex>
+        <Table
+          columns={dataTableColumns}
+          rowKey={(item) => item._id}
+          dataSource={dataSource}
+          pagination={pagination}
+          loading={listIsLoading}
+          onChange={handelDataTableLoad}
+          scroll={{ x: true }}
+          locale={{
+            emptyText: (
+              <Flex align="center" justify="center" vertical gap={10} className="py-3">
+                <Iconify icon="fluent-mdl2:search-data" size={36} className="text-gray-400" />
+                <Typography.Text className="text-gray-400">
+                  {translate('empty_text')}
+                </Typography.Text>
+              </Flex>
+            ),
+          }}
+        />
+      </Content>
     </>
   );
 }

@@ -1,4 +1,4 @@
-function isJsonString(str) {
+function isJsonString(str: string) {
   try {
     JSON.parse(str);
   } catch (e) {
@@ -11,12 +11,12 @@ function isJsonString(str) {
 export const localStorageHealthCheck = async () => {
   for (var i = 0; i < localStorage.length; ++i) {
     try {
-      const result = window.localStorage.getItem(localStorage.key(i));
+      const result = window.localStorage.getItem(localStorage.key(i) as string) as string;
       if (!isJsonString(result)) {
-        window.localStorage.removeItem(localStorage.key(i));
+        window.localStorage.removeItem(localStorage.key(i) as string);
       }
-      if (result && Object.keys(localStorage.key(i)).length == 0) {
-        window.localStorage.removeItem(localStorage.key(i));
+      if (result && Object.keys(localStorage.key(i) as string).length == 0) {
+        window.localStorage.removeItem(localStorage.key(i) as string);
       }
     } catch (error) {
       window.localStorage.clear();
@@ -28,10 +28,10 @@ export const localStorageHealthCheck = async () => {
 };
 
 export const storePersist = {
-  set: (key, state) => {
+  set: (key: string, state: any) => {
     window.localStorage.setItem(key, JSON.stringify(state));
   },
-  get: (key) => {
+  get: (key: string) => {
     const result = window.localStorage.getItem(key);
     if (!result) {
       return false;
@@ -42,7 +42,7 @@ export const storePersist = {
       } else return JSON.parse(result);
     }
   },
-  remove: (key) => {
+  remove: (key: string) => {
     window.localStorage.removeItem(key);
   },
   getAll: () => {

@@ -4,7 +4,19 @@ import axios from 'axios';
 import errorHandler from '@/request/errorHandler';
 import successHandler from '@/request/successHandler';
 
-export const login = async ({ loginData }) => {
+interface ILoginData {
+  email: string;
+  password: string;
+}
+
+interface IRegisterData {
+  name: string;
+  email: string;
+  password: string;
+  confirm_password: string;
+}
+
+export const login = async ({ loginData }: { loginData: ILoginData }) => {
   try {
     const response = await axios.post(
       API_BASE_URL + `login?timestamp=${new Date().getTime()}`,
@@ -26,7 +38,7 @@ export const login = async ({ loginData }) => {
   }
 };
 
-export const register = async ({ registerData }) => {
+export const register = async ({ registerData }: { registerData: IRegisterData }) => {
   try {
     const response = await axios.post(API_BASE_URL + `register`, registerData);
 
@@ -45,7 +57,7 @@ export const register = async ({ registerData }) => {
   }
 };
 
-export const verify = async ({ userId, emailToken }) => {
+export const verify = async ({ userId, emailToken }: { userId: string; emailToken: string }) => {
   try {
     const response = await axios.get(API_BASE_URL + `verify/${userId}/${emailToken}`);
 
@@ -64,7 +76,7 @@ export const verify = async ({ userId, emailToken }) => {
   }
 };
 
-export const resetPassword = async ({ resetPasswordData }) => {
+export const resetPassword = async ({ resetPasswordData }: { resetPasswordData: any }) => {
   try {
     const response = await axios.post(API_BASE_URL + `resetpassword`, resetPasswordData);
 

@@ -106,6 +106,9 @@ export default function HeaderContent() {
         flexDirection: 'row-reverse',
         justifyContent: 'flex-start',
         gap: '15px',
+        position: 'sticky',
+        top: 0,
+        zIndex: 1,
       }}
       className="shadow"
     >

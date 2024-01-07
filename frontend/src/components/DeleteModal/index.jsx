@@ -36,19 +36,18 @@ export default function DeleteModal({ config }) {
     }
     if (current) {
       let labels = deleteModalLabels.map((x) => valueByString(current, x)).join(' ');
-
       setDisplayItem(labels);
     }
   }, [isSuccess, current]);
 
   const handleOk = () => {
     const id = current._id;
-    dispatch(crud.delete({ entity, id }));
+    dispatch(crud.delete({ entity, id })).then((result) => {
+      dispatch(crud.list({ entity }));
+    });
     readBox.close();
     modal.close();
     panel.close();
-    navMenu.collapse();
-    dispatch(crud.list({ entity }));
   };
   const handleCancel = () => {
     if (!isLoading) modal.close();
@@ -61,10 +60,7 @@ export default function DeleteModal({ config }) {
       onCancel={handleCancel}
       confirmLoading={isLoading}
     >
-      <p>
-        {deleteMessage}
-        {displayItem}
-      </p>
+      <p>{`${deleteMessage} `}<strong>{displayItem}</strong></p>
     </Modal>
   );
 }

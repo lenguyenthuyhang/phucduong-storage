@@ -1,4 +1,6 @@
-import { lazy } from 'react';
+import { Suspense } from 'react';
+import PageLoader from '@/components/PageLoader';
+import { lazy } from '@loadable/component';
 
 import { useRoutes, Navigate } from 'react-router-dom';
 
@@ -6,7 +8,12 @@ const Logout = lazy(() => import('@/pages/Logout.jsx'));
 const NotFound = lazy(() => import('@/pages/NotFound.jsx'));
 
 const Dashboard = lazy(() => import('@/pages/Dashboard'));
+const Client = lazy(() => import('@/pages/Client'));
 const Customer = lazy(() => import('@/pages/Customer'));
+const CustomerCreate = lazy(() => import('@/pages/Customer/CustomerCreate'));
+const CustomerRead = lazy(() => import('@/pages/Customer/CustomerRead'));
+const CustomerUpdate = lazy(() => import('@/pages/Customer/CustomerUpdate'));
+
 const Inventory = lazy(() => import('@/pages/Inventory'));
 const Order = lazy(() => import('@/pages/Order'));
 const Invoice = lazy(() => import('@/pages/Invoice'));
@@ -72,6 +79,22 @@ export default function AppRouter() {
     {
       path: '/customer',
       element: <Customer />,
+    },
+    {
+      path: '/customer/create',
+      element: <CustomerCreate />,
+    },
+    {
+      path: '/customer/read/:id',
+      element: <CustomerRead />,
+    },
+    {
+      path: '/customer/update/:id',
+      element: <CustomerUpdate />,
+    },
+    {
+      path: '/client',
+      element: <Client />,
     },
     {
       path: '/people',
@@ -207,5 +230,5 @@ export default function AppRouter() {
     },
   ]);
 
-  return element;
+  return <Suspense fallback={<PageLoader />}>{element}</Suspense>;
 }

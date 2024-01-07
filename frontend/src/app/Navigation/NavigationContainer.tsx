@@ -51,23 +51,28 @@ const Sidebar = ({ collapsible = false }) => {
   const items = [
     {
       key: 'dashboard',
-      icon: <Iconify icon="ant-design:dashboard-outlined" size={22} />,
+      icon: <Iconify icon="carbon:dashboard" size={20} />,
       label: <Link to={'/'}>{translate('dashboard')}</Link>,
     },
     {
       key: 'customer',
-      icon: <Iconify icon="solar:user-check-line-duotone" size={22} />,
+      icon: <Iconify icon="solar:user-check-line-duotone" size={20} />,
       label: <Link to={'/customer'}>{translate('customer')}</Link>,
     },
     {
       key: 'gallery',
-      icon: <Iconify icon="solar:gallery-wide-line-duotone" size={22} />,
+      icon: <Iconify icon="solar:gallery-wide-line-duotone" size={20} />,
       label: <Link to={'/gallery'}>{translate('gallery')}</Link>,
     },
     {
       key: 'blog',
-      icon: <Iconify icon="solar:document-add-line-duotone" size={22} />,
+      icon: <Iconify icon="solar:document-add-line-duotone" size={20} />,
       label: <Link to={'/blog'}>{translate('blog')}</Link>,
+    },
+    {
+      key: 'client',
+      icon: <Iconify icon="solar:user-check-line-duotone" size={20} />,
+      label: <Link to={'/client'}>{translate('client')}</Link>,
     },
     {
       key: 'people',
@@ -152,9 +157,14 @@ const Sidebar = ({ collapsible = false }) => {
   ];
 
   useEffect(() => {
-    if (location) if (currentPath !== location.pathname) setCurrentPath(location.pathname.slice(1));
+    if (location)
+      if (currentPath !== location.pathname) {
+        if (location.pathname === '/') {
+          setCurrentPath('dashboard');
+        } else setCurrentPath(location.pathname.slice(1));
+      }
   }, [location, currentPath]);
-
+  
   useEffect(() => {
     if (isNavMenuClose) {
       setLogoApp(isNavMenuClose);
@@ -218,7 +228,7 @@ const Sidebar = ({ collapsible = false }) => {
           height: 'calc(100vh - 120px)',
         }}
       >
-        <Menu items={items} mode="inline" theme={'light'} selectedKeys={[currentPath]} />
+        <Menu items={items} mode="inline" theme={'light'} selectedKeys={[currentPath || "dashboard"]} />
       </Scrollbar>
     </Sider>
   );

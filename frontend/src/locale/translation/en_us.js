@@ -525,6 +525,15 @@ purchase_now: "Purchase Now",
 gallery: "Gallery",
 blog: "Blog",
 collapse: "Collapse",
-expand: "Expand"
+expand: "Expand",
+empty_text: "No Data",
+gender: "Gender",
+male: "Male",
+female: "Female",
+dob: "Day of Birth",
+not_activated: "Not Activated",
+activated: "Activated",
+deactivated: "Deactivated",
+fullname: "Fullname",
 }
  export default lang

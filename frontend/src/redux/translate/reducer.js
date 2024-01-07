@@ -1,10 +1,10 @@
 import * as actionTypes from './types';
-import en_us from '@/locale/translation/en_us';
+import vi_vn from '@/locale/translation/vi_vn';
 import storePersist from '../storePersist';
 
 const LANG_INITIAL_STATE = {
-  result: en_us,
-  langCode: 'en_us',
+  result: vi_vn,
+  langCode: 'vi_vn',
   langDirection: 'ltr',
   isLoading: false,
   isSuccess: false,

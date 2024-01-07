@@ -10,9 +10,10 @@
     "@ant-design/icons": "^5.2.6",
     "@ant-design/pro-layout": "^7.17.16",
     "@iconify/react": "^4.1.1",
+    "@loadable/component": "^5.16.3",
     "@reduxjs/toolkit": "^2.0.1",
     "@vitejs/plugin-react": "^4.2.1",
-    "antd": "^5.12.2",
+    "antd": "^5.12.5",
     "axios": "^1.6.2",
     "cross-env": "7.0.3",
     "currency.js": "2.0.4",
@@ -40,8 +41,11 @@
     "dev:remote": "cross-env VITE_DEV_REMOTE=remote npm run dev"
   },
   "devDependencies": {
+    "@types/loadable__component": "^5.13.8",
     "@types/react": "^18.2.38",
     "@types/react-dom": "^18.2.17",
+    "@types/react-redux": "^7.1.33",
+    "@types/redux": "^3.6.0",
     "@types/shortid": "^0.0.32",
     "@types/styled-components": "^5.1.34",
     "@typescript-eslint/eslint-plugin": "^6.15.0",

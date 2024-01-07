@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useCrudContext } from '@/context/crud';
 import { useAppContext } from '@/context/appContext';
-import { Grid, Layout, Drawer } from 'antd';
+import { Grid, Layout, Drawer, Modal } from 'antd';
 import { MenuOutlined } from '@ant-design/icons';
 import CollapseBox from '../CollapseBox';
 
@@ -55,21 +55,15 @@ export default function SidePanel({ config, topContent, bottomContent, fixHeader
   };
 
   return (
-    <Drawer
-      title={config.PANEL_TITLE}
-      placement="right"
-      onClose={collapsePanel}
-      open={!isPanelClose}
-      width={450}
-    >
-      <div
-        className="sidePanelContent"
-        style={{
-          opacity: opacitySider,
-          paddingTop: paddingTopSider,
-        }}
+    <Modal
+        title={config.PANEL_TITLE}
+        centered
+        open={!isPanelClose}
+        onOk={collapsePanel}
+        onCancel={collapsePanel}
+        footer={null}
+        width={1000}
       >
-        {fixHeaderPanel}
         <CollapseBox
           buttonTitle={ADD_NEW_ENTITY}
           isCollapsed={isBoxCollapsed}
@@ -77,8 +71,31 @@ export default function SidePanel({ config, topContent, bottomContent, fixHeader
           topContent={topContent}
           bottomContent={bottomContent}
         ></CollapseBox>
-      </div>
-    </Drawer>
+      </Modal>
+    // <Drawer
+    //   title={config.PANEL_TITLE}
+    //   placement="right"
+    //   onClose={collapsePanel}
+    //   open={!isPanelClose}
+    //   width={450}
+    // >
+    //   <div
+    //     className="sidePanelContent"
+    //     style={{
+    //       opacity: opacitySider,
+    //       paddingTop: paddingTopSider,
+    //     }}
+    //   >
+    //     {fixHeaderPanel}
+    //     <CollapseBox
+    //       buttonTitle={ADD_NEW_ENTITY}
+    //       isCollapsed={isBoxCollapsed}
+    //       onCollapse={collapsePanelBox}
+    //       topContent={topContent}
+    //       bottomContent={bottomContent}
+    //     ></CollapseBox>
+    //   </div>
+    // </Drawer>
     // <Sider
     //   width={screens.md ? '400px' : '95%'}
     //   collapsed={isSidePanelClose}

@@ -7,8 +7,8 @@ import { Layout } from 'antd';
 
 import { useAppContext } from '@/context/appContext';
 
-import Navigation from '@/apps/Navigation/NavigationContainer';
-import HeaderContent from '@/apps/Header/HeaderContainer';
+import Navigation from '@/app/Navigation/NavigationContainer';
+import HeaderContent from '@/app/Header/HeaderContainer';
 
 import { settingsAction } from '@/redux/settings/actions';
 import { translateAction } from '@/redux/translate/actions';
@@ -18,8 +18,9 @@ import AppRouter from '@/router/AppRouter';
 import useResponsive from '@/hooks/useResponsive';
 
 import storePersist from '@/redux/storePersist';
+import { useAppDispatch } from '@/redux/store';
 
-export default function ErpCrmApp() {
+export default function MainApp() {
   const { Content } = Layout;
 
   const { state: stateApp } = useAppContext();
@@ -27,7 +28,7 @@ export default function ErpCrmApp() {
 
   const { isMobile } = useResponsive();
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch()
 
   useLayoutEffect(() => {
     dispatch(settingsAction.list({ entity: 'setting' }));
@@ -64,15 +65,15 @@ export default function ErpCrmApp() {
           </Content>
         </Layout>
       ) : (
-        <Layout style={{ marginLeft: isNavMenuClose ? 80 : 240 }} className='bg-gray-200'>
+        <Layout style={{ marginLeft: isNavMenuClose ? 80 : 240 }} className="bg-gray-200">
           <HeaderContent />
           <Content
             style={{
-              margin: '40px auto 30px',
+              margin: '30px auto 30px',
               overflow: 'initial',
               width: '100%',
               padding: '0 25px',
-              maxWidth: 1200,
+              // maxWidth: 1200,
             }}
           >
             <AppRouter />

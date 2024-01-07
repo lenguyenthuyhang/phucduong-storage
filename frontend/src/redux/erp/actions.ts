@@ -2,14 +2,14 @@ import * as actionTypes from './types';
 import { request } from '@/request';
 
 export const erp = {
-  resetState: () => (dispatch) => {
+  resetState: () => (dispatch: (arg0: { type: string; }) => void) => {
     dispatch({
       type: actionTypes.RESET_STATE,
     });
   },
   resetAction:
     ({ actionType }) =>
-    (dispatch) => {
+    (dispatch: (arg0: { type: string; keyState: any; payload: null; }) => void) => {
       dispatch({
         type: actionTypes.RESET_ACTION,
         keyState: actionType,
@@ -26,7 +26,7 @@ export const erp = {
     },
   currentAction:
     ({ actionType, data }) =>
-    (dispatch) => {
+    (dispatch: (arg0: { type: string; keyState: any; payload: any; }) => void) => {
       dispatch({
         type: actionTypes.CURRENT_ACTION,
         keyState: actionType,
@@ -35,7 +35,7 @@ export const erp = {
     },
   list:
     ({ entity, options = { page: 1, items: 10 } }) =>
-    async (dispatch) => {
+    async (dispatch: (arg0: { type: string; keyState: string; payload: { items: any; pagination: { current: number; pageSize: number; total: number; }; } | null; }) => void) => {
       dispatch({
         type: actionTypes.REQUEST_LOADING,
         keyState: 'list',
@@ -68,7 +68,7 @@ export const erp = {
     },
   create:
     ({ entity, jsonData }) =>
-    async (dispatch) => {
+    async (dispatch: (arg0: { type: string; keyState?: string; payload: any; }) => void) => {
       dispatch({
         type: actionTypes.REQUEST_LOADING,
         keyState: 'create',
@@ -96,8 +96,8 @@ export const erp = {
       }
     },
   recordPayment:
-    ({ entity, jsonData }) =>
-    async (dispatch) => {
+    ({ entity, jsonData }: { entity: any; jsonData: any }) =>
+    async (dispatch: (arg0: { type: string; keyState?: string; payload: any; }) => void) => {
       dispatch({
         type: actionTypes.REQUEST_LOADING,
         keyState: 'recordPayment',
@@ -125,8 +125,8 @@ export const erp = {
       }
     },
   read:
-    ({ entity, id }) =>
-    async (dispatch) => {
+    ({ entity, id }: { entity: any; id: any }) =>
+    async (dispatch: (arg0: { type: string; keyState?: string; payload: any; }) => void) => {
       dispatch({
         type: actionTypes.REQUEST_LOADING,
         keyState: 'read',
@@ -154,8 +154,8 @@ export const erp = {
       }
     },
   update:
-    ({ entity, id, jsonData }) =>
-    async (dispatch) => {
+    ({ entity, id, jsonData }: { entity: string; id: string; jsonData: any }) =>
+    async (dispatch: (arg0: { type: string; keyState?: string; payload: any; }) => void) => {
       dispatch({
         type: actionTypes.REQUEST_LOADING,
         keyState: 'update',
@@ -184,8 +184,8 @@ export const erp = {
     },
 
   delete:
-    ({ entity, id }) =>
-    async (dispatch) => {
+    ({ entity, id }: { entity: any, id: any }) =>
+    async (dispatch: (arg0: { type: string; keyState: string; payload?: any; }) => void) => {
       dispatch({
         type: actionTypes.RESET_ACTION,
         keyState: 'delete',
@@ -218,8 +218,8 @@ export const erp = {
     },
 
   search:
-    ({ entity, options }) =>
-    async (dispatch) => {
+    ({ entity, options }: { entity: any; options: any }) =>
+    async (dispatch: (arg0: { type: string; keyState: string; payload: any; }) => void) => {
       dispatch({
         type: actionTypes.REQUEST_LOADING,
         keyState: 'search',
@@ -244,8 +244,8 @@ export const erp = {
     },
 
   summary:
-    ({ entity, options }) =>
-    async (dispatch) => {
+    ({ entity, options }: { entity: any; options: any }) =>
+    async (dispatch: (arg0: { type: string; keyState: string; payload: any; }) => void) => {
       dispatch({
         type: actionTypes.REQUEST_LOADING,
         keyState: 'summary',
@@ -270,13 +270,13 @@ export const erp = {
     },
 
   mail:
-    ({ entity, jsonData }) =>
+    ({ entity, jsonData }: { entity: string; jsonData: any }) =>
     async () => {
       await request.mail({ entity, jsonData });
     },
 
   convert:
-    ({ entity, id }) =>
+    ({ entity, id }: { entity: string; id: string }) =>
     async () => {
       await request.convert({ entity, id });
     },

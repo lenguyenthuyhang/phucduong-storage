@@ -37,6 +37,7 @@ export default function Localization({ children }: Props) {
           colorError: '#ff5630',
           colorBgBase: '#ffffff',
           wireframe: false,
+          borderRadius: 4
         },
         components: {
           Progress: {

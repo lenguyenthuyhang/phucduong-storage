@@ -213,3 +213,5 @@ Commercial licenses are available : [Get in touch](mailto:hello@idurarapp.com)
 ## Show your support
 
 Dont forget to give a ⭐️ to this project ... Happy coding!
+
+This project is tested with BrowserStack.
